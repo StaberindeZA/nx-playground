@@ -23,7 +23,7 @@ function WithCoupon({
       {readOnly ? null : (
         <div>
           <button
-            className="flex-1 font-semibold rounded-md text-base py-2 px-5 w-full inline-block text-center border font-header box-border transition-standard"
+            className="secondary-button"
             onClick={clearPromotionCode}
             disabled={disabled}
             data-testid="coupon-remove-button"
@@ -57,7 +57,7 @@ function WithoutCoupon({
     >
       <div className="input-row">
         <input
-          className="bg-white border border-gray-900/30 rounded-md h-10 w-full p-4 disabled:bg-gray-300 disabled:text-gray-500"
+          className="coupon-input"
           type="text"
           name="coupon"
           data-testid="coupon-input"
@@ -73,7 +73,7 @@ function WithoutCoupon({
       <div>
         <button
           name="apply"
-          className="flex-1 font-semibold rounded-md text-base py-2 px-5 w-full inline-block text-center border font-header box-border transition-standard bg-blue-500 border-blue-600 text-white disabled:bg-gray-300"
+          className="primary-button"
           type="submit"
           data-testid="coupon-button"
           disabled={disabled}
@@ -91,6 +91,8 @@ export interface CouponFormProps {
   readOnly: boolean;
   appliedPromotionCode: string;
   setAppliedPromotionCode: (coupon: string) => void;
+  initialPromotionCode?: string;
+  initialErrorMessage?: string;
 }
 
 export function CouponForm({
@@ -98,11 +100,13 @@ export function CouponForm({
   readOnly,
   appliedPromotionCode,
   setAppliedPromotionCode,
+  initialPromotionCode,
+  initialErrorMessage,
 }: CouponFormProps) {
   const [promotionCode, setPromotionCode] = useState<string>(
-    appliedPromotionCode || ''
+    initialPromotionCode || appliedPromotionCode || ''
   );
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>(initialErrorMessage || '');
   const [disabled, setDisabled] = useState<boolean>(false);
 
   const onSubmit: FormEventHandler = async (event) => {
