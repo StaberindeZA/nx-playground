@@ -20,7 +20,6 @@ export function Coupon(props: CouponProps) {
         <div className="p-3 border border-dashed">
           <h3>This is the Coupon Form component</h3>
           <CouponForm
-            planId={'plan_GqM9N6qyhvxaVk'}
             readOnly={false}
             appliedPromotionCode={appliedCouponCheckout}
             setAppliedPromotionCode={setAppliedCouponCheckout}
@@ -39,7 +38,6 @@ export function Coupon(props: CouponProps) {
         <div className="p-3 border border-dashed">
           <h3>This is the Coupon Form component</h3>
           <CouponForm
-            planId={'plan_GqM9N6qyhvxaVk'}
             readOnly={false}
             appliedPromotionCode={appliedCouponCheckoutApplied}
             setAppliedPromotionCode={setAppliedCouponCheckoutApplied}
@@ -58,7 +56,6 @@ export function Coupon(props: CouponProps) {
         <div className="p-3 border border-dashed">
           <h3>This is the Coupon Form component</h3>
           <CouponForm
-            planId={'plan_GqM9N6qyhvxaVk'}
             readOnly={false}
             appliedPromotionCode={appliedCouponCheckout}
             setAppliedPromotionCode={setAppliedCouponCheckout}
@@ -79,7 +76,6 @@ export function Coupon(props: CouponProps) {
         <div className="p-3 border border-dashed">
           <h3>This is the Coupon Form component</h3>
           <CouponForm
-            planId={'plan_GqM9N6qyhvxaVk'}
             readOnly={true}
             appliedPromotionCode={appliedCouponSuccess}
             setAppliedPromotionCode={setAppliedCouponSuccess}

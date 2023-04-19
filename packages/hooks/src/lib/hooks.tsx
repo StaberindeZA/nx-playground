@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { CouponDetails } from '../types';
 
+let usedPromotionCode: string;
+
 export const checkPromotionCode = async (
   priceId: string,
   promotionCode?: string
@@ -32,5 +34,16 @@ export const checkPromotionCode = async (
     throw new Error('Invalid');
   }
 
+  usedPromotionCode = promotionCode || '';
+
+  console.log(usedPromotionCode);
+
   return true;
 };
+
+export async function getCart() {
+  console.log(usedPromotionCode);
+  return {
+    promotionCode: usedPromotionCode || '',
+  };
+}

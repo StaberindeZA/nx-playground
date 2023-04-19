@@ -1,5 +1,6 @@
 import { FormEventHandler, useState } from 'react';
 import { checkPromotionCode } from '@nx-play/hooks';
+import { useRouter } from 'next/router';
 
 interface WithCouponProps {
   readOnly: boolean;
@@ -87,7 +88,6 @@ function WithoutCoupon({
 
 /* eslint-disable-next-line */
 export interface CouponFormProps {
-  planId: string;
   readOnly: boolean;
   appliedPromotionCode: string;
   setAppliedPromotionCode: (coupon: string) => void;
@@ -96,7 +96,6 @@ export interface CouponFormProps {
 }
 
 export function CouponForm({
-  planId,
   readOnly,
   appliedPromotionCode,
   setAppliedPromotionCode,
@@ -108,15 +107,17 @@ export function CouponForm({
   );
   const [error, setError] = useState<string>(initialErrorMessage || '');
   const [disabled, setDisabled] = useState<boolean>(false);
+  const router = useRouter();
 
   const onSubmit: FormEventHandler = async (event) => {
     event.preventDefault();
     event.stopPropagation();
     try {
       setDisabled(true);
-      await checkPromotionCode(planId, promotionCode);
+      await checkPromotionCode('plan_GqM9N6qyhvxaVk', promotionCode);
       setAppliedPromotionCode(promotionCode);
       setError('');
+      router.push('/tester/checkout');
     } catch (err) {
       setError(err.message);
     } finally {
