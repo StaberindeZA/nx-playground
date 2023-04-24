@@ -1,6 +1,16 @@
 import { FormEventHandler, useState } from 'react';
-import { checkPromotionCode } from '@nx-play/hooks';
+import { checkPromotionCode } from '@nx-play/api-client';
 import { useRouter } from 'next/router';
+import { gql, useQuery } from '@apollo/client';
+
+export const CART_QUERY = gql`
+  query singleCart($id: Int!) {
+    singleCart(id: $id) {
+      id
+      promotionCode
+    }
+  }
+`;
 
 interface WithCouponProps {
   readOnly: boolean;
@@ -108,6 +118,18 @@ export function CouponForm({
   const [error, setError] = useState<string>(initialErrorMessage || '');
   const [disabled, setDisabled] = useState<boolean>(false);
   const router = useRouter();
+
+  const {
+    loading,
+    error: queryError,
+    data,
+  } = useQuery(CART_QUERY, {
+    variables: {
+      id: 1,
+    },
+  });
+
+  console.log('Here is the data', data);
 
   const onSubmit: FormEventHandler = async (event) => {
     event.preventDefault();

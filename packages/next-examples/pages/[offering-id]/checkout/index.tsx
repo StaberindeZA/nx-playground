@@ -1,11 +1,24 @@
-import CouponForm from '../../../components/coupon-form/coupon-form';
-import { getCart } from '@nx-play/hooks';
+import CouponForm, {
+  CART_QUERY,
+} from '../../../components/coupon-form/coupon-form';
+import { addApolloState, initializeApollo } from '../../../lib/apolloClient';
 import { useState } from 'react';
 
 export async function getServerSideProps() {
-  const data = await getCart();
+  const apolloClient = initializeApollo();
 
-  return { props: { data } };
+  const value = await apolloClient.query({
+    query: CART_QUERY,
+    variables: {
+      id: 1,
+    },
+  });
+
+  console.log({ value });
+
+  return addApolloState(apolloClient, {
+    props: {},
+  });
 }
 
 /* eslint-disable-next-line */

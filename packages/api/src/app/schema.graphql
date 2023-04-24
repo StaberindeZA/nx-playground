@@ -13,10 +13,12 @@ type Cart {
 type Query {
   allSets: [Set]
   allCarts: [Cart]
+  singleCart(id: Int!): Cart
 }
 
 type Mutation {
   addSet(name: String, year: String, numParts: Int): Set
   addCart(promotionCode: String): Cart
-  updateCart(id: Int!, promotionCode: String): Cart
+  updateCart(id: Int!, promotionCode: String!): Cart
+  checkPromotionCode(id: Int!, promotionCode: String!): Cart
 }
