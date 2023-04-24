@@ -1,0 +1,22 @@
+type Set {
+  id: Int!
+  name: String
+  year: Int
+  numParts: Int
+}
+
+type Cart {
+  id: Int!
+  promotionCode: String
+}
+
+type Query {
+  allSets: [Set]
+  allCarts: [Cart]
+}
+
+type Mutation {
+  addSet(name: String, year: String, numParts: Int): Set
+  addCart(promotionCode: String): Cart
+  updateCart(id: Int!, promotionCode: String): Cart
+}

@@ -5,8 +5,6 @@ import { useState } from 'react';
 export async function getServerSideProps() {
   const data = await getCart();
 
-  console.log({ data });
-
   return { props: { data } };
 }
 
