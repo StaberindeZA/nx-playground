@@ -119,13 +119,9 @@ function WithoutCoupon({
 /* eslint-disable-next-line */
 export interface CouponFormProps {
   readOnly: boolean;
-  appliedPromotionCode: string;
-  setAppliedPromotionCode: (coupon: string) => void;
-  initialPromotionCode?: string;
-  initialErrorMessage?: string;
 }
 
-export function CouponForm({ readOnly, initialErrorMessage }: CouponFormProps) {
+export function CouponForm({ readOnly }: CouponFormProps) {
   const couponInputRef = useRef<HTMLInputElement>();
   const [checkCode, { loading: checkLoading, error: checkError }] = useMutation(
     CHECK_CODE,
