@@ -1,7 +1,5 @@
-import { FormEventHandler, useState } from 'react';
-import { checkPromotionCode } from '@nx-play/api-client';
-import { useRouter } from 'next/router';
-import { gql, useQuery } from '@apollo/client';
+import { FormEventHandler, RefObject, useRef } from 'react';
+import { gql, useQuery, useMutation } from '@apollo/client';
 
 export const CART_QUERY = gql`
   query singleCart($id: Int!) {
@@ -11,6 +9,30 @@ export const CART_QUERY = gql`
     }
   }
 `;
+
+export const CHECK_CODE = gql`
+  mutation checkPromotionCode($id: Int!, $code: String!) {
+    checkPromotionCode(id: $id, promotionCode: $code) {
+      id
+      promotionCode
+    }
+  }
+`;
+
+export const UPDATE_CART = gql`
+  mutation updateCart($id: Int!, $code: String!) {
+    updateCart(id: $id, promotionCode: $code) {
+      id
+      promotionCode
+    }
+  }
+`;
+
+const CART_ID = 1;
+
+function errorHandler(err: Error) {
+  console.error(err.message);
+}
 
 interface WithCouponProps {
   readOnly: boolean;
@@ -50,14 +72,14 @@ function WithCoupon({
 interface WithoutCouponProps {
   disabled: boolean;
   promotionCode: string;
-  setPromotionCode: (promotionCode: string) => void;
+  couponInputRef: RefObject<HTMLInputElement>;
   onSubmit: (event) => void;
 }
 
 function WithoutCoupon({
   disabled,
   promotionCode,
-  setPromotionCode,
+  couponInputRef,
   onSubmit,
 }: WithoutCouponProps) {
   return (
@@ -72,12 +94,10 @@ function WithoutCoupon({
           type="text"
           name="coupon"
           data-testid="coupon-input"
-          value={promotionCode}
-          onChange={(event) => {
-            setPromotionCode(event.target.value);
-          }}
+          defaultValue={promotionCode}
           placeholder="Enter code"
           disabled={disabled}
+          ref={couponInputRef}
         />
       </div>
 
@@ -105,49 +125,50 @@ export interface CouponFormProps {
   initialErrorMessage?: string;
 }
 
-export function CouponForm({
-  readOnly,
-  appliedPromotionCode,
-  setAppliedPromotionCode,
-  initialPromotionCode,
-  initialErrorMessage,
-}: CouponFormProps) {
-  const [promotionCode, setPromotionCode] = useState<string>(
-    initialPromotionCode || appliedPromotionCode || ''
+export function CouponForm({ readOnly, initialErrorMessage }: CouponFormProps) {
+  const couponInputRef = useRef<HTMLInputElement>();
+  const [checkCode, { loading: checkLoading, error: checkError }] = useMutation(
+    CHECK_CODE,
+    {
+      onError: errorHandler,
+    }
   );
-  const [error, setError] = useState<string>(initialErrorMessage || '');
-  const [disabled, setDisabled] = useState<boolean>(false);
-  const router = useRouter();
-
+  const [updateCart, { loading: updateLoading, error: updateError }] =
+    useMutation(UPDATE_CART, {
+      onError: errorHandler,
+    });
   const {
     loading,
     error: queryError,
     data,
   } = useQuery(CART_QUERY, {
     variables: {
-      id: 1,
+      id: CART_ID,
     },
   });
-
-  console.log('Here is the data', data);
 
   const onSubmit: FormEventHandler = async (event) => {
     event.preventDefault();
     event.stopPropagation();
-    try {
-      setDisabled(true);
-      await checkPromotionCode('plan_GqM9N6qyhvxaVk', promotionCode);
-      setAppliedPromotionCode(promotionCode);
-      setError('');
-      router.push('/tester/checkout');
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setDisabled(false);
-    }
+    checkCode({
+      variables: {
+        id: CART_ID,
+        code: couponInputRef?.current.value || '',
+      },
+    });
   };
 
-  const hasPromotionCode = !!appliedPromotionCode;
+  const {
+    singleCart: { promotionCode },
+  } = data;
+
+  const hasPromotionCode = !!promotionCode;
+  const error =
+    queryError?.message || checkError?.message || updateError?.message;
+
+  if (loading) {
+    return <>Loading...</>;
+  }
 
   return (
     <div
@@ -160,18 +181,22 @@ export function CouponForm({
       {hasPromotionCode ? (
         <WithCoupon
           readOnly={readOnly}
-          disabled={disabled}
+          disabled={updateLoading}
           promotionCode={promotionCode}
           clearPromotionCode={() => {
-            setPromotionCode('');
-            setAppliedPromotionCode('');
+            updateCart({
+              variables: {
+                id: CART_ID,
+                code: '',
+              },
+            });
           }}
         />
       ) : (
         <WithoutCoupon
-          disabled={disabled}
+          disabled={checkLoading}
           promotionCode={promotionCode}
-          setPromotionCode={setPromotionCode}
+          couponInputRef={couponInputRef}
           onSubmit={onSubmit}
         />
       )}

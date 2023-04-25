@@ -7,14 +7,12 @@ import { useState } from 'react';
 export async function getServerSideProps() {
   const apolloClient = initializeApollo();
 
-  const value = await apolloClient.query({
+  await apolloClient.query({
     query: CART_QUERY,
     variables: {
       id: 1,
     },
   });
-
-  console.log({ value });
 
   return addApolloState(apolloClient, {
     props: {},

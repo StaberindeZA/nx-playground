@@ -7,3 +7,8 @@ export interface CouponDetails {
   expired: boolean;
   maximallyRedeemed: boolean;
 }
+
+export interface CartEntity {
+  id: number;
+  promotionCode: string;
+}

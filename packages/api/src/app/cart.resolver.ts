@@ -1,10 +1,5 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { checkPromotionCode } from '@nx-play/api-client';
-
-export interface CartEntity {
-  id: number;
-  promotionCode: string;
-}
+import { checkPromotionCode, CartEntity } from '@nx-play/api-client';
 
 @Resolver('Cart')
 export class CartResolver {
