@@ -4,7 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { SetResolver } from './set.resolver';
+import { CMSResolver } from './cms.resolver';
 import { CartResolver } from './cart.resolver';
 
 @Module({
@@ -15,6 +15,6 @@ import { CartResolver } from './cart.resolver';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, SetResolver, CartResolver],
+  providers: [AppService, CMSResolver, CartResolver],
 })
 export class AppModule {}
