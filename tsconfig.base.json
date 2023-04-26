@@ -15,9 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nx-play/api-client": ["packages/api-client/src/index.ts"],
-      "@nx-play/hooks": ["packages/hooks/src/index.ts"],
-      "@nx-play/is-even": ["packages/is-even/src/index.ts"]
+      "@nx-play/api-client": ["packages/api-client/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
