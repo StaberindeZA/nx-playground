@@ -4,6 +4,7 @@ import CouponForm, {
 } from '../../../components/coupon-form/coupon-form';
 import { addApolloState, initializeApollo } from '../../../lib/apolloClient';
 import { CartEntity, CMSEntity } from '@nx-play/api-client';
+import CouponSuccess from '../../../components/coupon-success/coupon-success';
 
 export const CMS_QUERY = gql`
   query singleCMS($offering: String!) {
@@ -52,8 +53,6 @@ export interface CheckoutProps {
 
 export function Checkout({ cms, cart }: CheckoutProps) {
   const { details } = cms;
-  console.log('HERE we go');
-  console.log({ cart });
 
   return (
     <div className="w-[480px] bg-gray-300 p-8">
@@ -66,9 +65,10 @@ export function Checkout({ cms, cart }: CheckoutProps) {
         </ul>
       </div>
       <CouponForm readOnly={false} />
+      <CouponSuccess />
       {!!cart.promotionCode && (
         <div className="mt-3 p-3 border border-dashed">
-          <div className="bg-green-400 p-2 rounded-lg">Success</div>
+          <div className="bg-green-400 p-2 rounded-lg">Success from Page</div>
         </div>
       )}
     </div>

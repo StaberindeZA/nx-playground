@@ -40,8 +40,8 @@ export class CartResolver {
     return newCart;
   }
 
-  @Mutation()
-  updateCart(
+  @Mutation('updateCart')
+  async updateCart(
     @Args('id') id: number,
     @Args('promotionCode') promotionCode: string
   ) {
@@ -51,6 +51,10 @@ export class CartResolver {
         cart.promotionCode = promotionCode;
         returnCart = cart;
       }
+    });
+
+    await new Promise((resolve) => {
+      setTimeout(() => resolve(null), 2000);
     });
 
     return returnCart;
@@ -74,6 +78,10 @@ export class CartResolver {
         cart.promotionCode = promotionCode;
         returnCart = cart;
       }
+    });
+
+    await new Promise((resolve) => {
+      setTimeout(() => resolve(null), 2000);
     });
 
     return returnCart;
