@@ -17,8 +17,7 @@
     "paths": {
       "@nx-play/api-client": ["packages/api-client/src/index.ts"],
       "@nx-play/hooks": ["packages/hooks/src/index.ts"],
-      "@nx-play/is-even": ["packages/is-even/src/index.ts"],
-      "@nx-play/is-odd": ["packages/is-odd/src/index.ts"]
+      "@nx-play/is-even": ["packages/is-even/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
